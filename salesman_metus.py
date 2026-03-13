@@ -99,11 +99,39 @@ def new_population(population, taille_population):
         enfant_muté = swap_mutation(enfant)
         nouvelle_population.append(enfant_muté)
     return nouvelle_population
+global nb_gens
 
-i=1
-for individu in new_population(generate_genese(generate_random_villes(10), 10), 10):
-    print(f"Individu :{i}")
-    for v in individu:
-        print(f"- {v.nom} (Lat:{v.latitude:.2f}, Lon:{v.longitude:.2f})" + f"")
-    print(f"Distance totale : {1/fitness(individu):.2f} km\n")
-    i += 1
+def tsp_algorithm(n_villes=10, taille_pop=10, gens=500):
+    # Entrée : Nombre de points aléatoires [cite: 6]
+    global nb_gens
+    nb_gens = 0
+    villes = generate_random_villes(n_villes)
+    pop = generate_genese(villes, taille_pop)
+    
+    # On initialise le record avec le premier individu de la genèse
+    meilleur_absolu = pop[0]
+    for _ in range(gens):
+        # 1. On crée la génération n+1 à partir de la n
+        nouvelle_pop = new_population(pop, taille_pop)
+        
+        # 2. On cherche si un nouveau champion est apparu
+        champion_gen = max(nouvelle_pop, key=fitness)
+        if fitness(champion_gen) > fitness(meilleur_absolu):
+            meilleur_absolu = champion_gen
+            
+        # 3. TRANSITION : La nouvelle génération devient la base de la suivante
+        pop = nouvelle_pop 
+        global nb_gens
+        nb_gens += 1
+    # Sortie : Valeur totale de la distance (coût) [cite: 9]
+    return villes, meilleur_absolu, 1 / fitness(meilleur_absolu)
+            
+                
+print( "Résultat du TSP avec l'algorithme génétique :")
+villes, chemin_optimal, distance = tsp_algorithm()
+print("Ville de départ :", chemin_optimal[0].nom)
+print("Distance totale :", distance, "km")
+print("Chemin optimal :")
+print("Test obtenu au bout de " + str(nb_gens) + " générations.")
+for ville in chemin_optimal:
+    print(ville.nom+" -> ", end="")
