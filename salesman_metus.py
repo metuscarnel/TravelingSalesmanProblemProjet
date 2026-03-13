@@ -101,7 +101,7 @@ def new_population(population, taille_population):
     return nouvelle_population
 global nb_gens
 
-def tsp_algorithm(n_villes=10, taille_pop=10, gens=500):
+def tsp_algorithm(n_villes=5, taille_pop=100, gens=500):
     # Entrée : Nombre de points aléatoires [cite: 6]
     global nb_gens
     nb_gens = 0
@@ -118,11 +118,11 @@ def tsp_algorithm(n_villes=10, taille_pop=10, gens=500):
         champion_gen = max(nouvelle_pop, key=fitness)
         if fitness(champion_gen) > fitness(meilleur_absolu):
             meilleur_absolu = champion_gen
-            
+        
         # 3. TRANSITION : La nouvelle génération devient la base de la suivante
         pop = nouvelle_pop 
-        global nb_gens
         nb_gens += 1
+        # Si auc une amélioration n'est trouvée, on peut arrêter plus tôt  
     # Sortie : Valeur totale de la distance (coût) [cite: 9]
     return villes, meilleur_absolu, 1 / fitness(meilleur_absolu)
             
@@ -135,3 +135,5 @@ print("Chemin optimal :")
 print("Test obtenu au bout de " + str(nb_gens) + " générations.")
 for ville in chemin_optimal:
     print(ville.nom+" -> ", end="")
+
+print(chemin_optimal[0].nom) # Retour à la ville de départ pour fermer le cycle
