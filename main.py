@@ -67,7 +67,8 @@ def afficher_carte(chemin, distance):
             lat=[v.latitude for v in trace],
             lon=[v.longitude for v in trace],
             mode=mode_affichage,
-            text=[f"{i+1}. {v.nom}" for i, v in enumerate(chemin)] + ["Arrivée"],
+            text=[f"{i+1}. {v.nom}" for i, v in enumerate(chemin)]
+            + ["Ville de départ"],
             textposition="top right",
             marker=dict(size=8, color=ACCENT_BLUE),
             line=dict(width=2, color=ACCENT_BLUE),
