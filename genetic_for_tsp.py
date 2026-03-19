@@ -17,9 +17,9 @@ def distance(individu):
     return d
 
 
-# -----------------------------
 # CLASSE VILLE
-# -----------------------------
+
+
 class Ville:
     def __init__(self, nom, latitude, longitude):
         self.nom = nom
@@ -27,9 +27,6 @@ class Ville:
         self.longitude = longitude
 
 
-# -----------------------------
-# DONNÉES
-# -----------------------------
 def generate_random_villes(n):
     with open("villes_france.json", "r", encoding="utf-8") as f:
         donnees_json = json.load(f)
@@ -41,9 +38,6 @@ def generate_random_villes(n):
     ]
 
 
-# -----------------------------
-# POPULATION
-# -----------------------------
 def generate_individu(villes):
     return random.sample(villes, len(villes))
 

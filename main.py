@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 import plotly.graph_objects as go
-import salesman_metus as tsp
+import genetic_for_tsp as tsp
 
 # Interface configuration
 BG_COLOR = "#FFFFFF"
@@ -16,15 +16,14 @@ FONT_MAIN = ("Inter", 11)
 FONT_TITLE = ("Inter", 13, "bold")
 
 
-# --- Fonctions ---
-def lancer_ia():
+def run_tsp():
     try:
         n = int(entree_n.get())
-        # --- Calcul TSP ---
-        villes_init, chemin, distance = tsp.tsp_algorithm(n_villes=n)
-
+        nb_generations = 500
+        villes_init = tsp.generate_random_villes(n)
+        chemin, distance = tsp.tsp_algorithm(villes_init, gens=nb_generations)
         label_resultat.config(
-            text=f"Distance : {distance:.2f} km | Générations : {tsp.nb_gens}"
+            text=f"Distance : {distance:.2f} km | Générations : {nb_generations}"
         )
 
         zone_texte.delete("1.0", tk.END)
@@ -51,6 +50,10 @@ def lancer_ia():
 
         afficher_carte(chemin, distance)
 
+    except FileNotFoundError:
+        messagebox.showerror(
+            "Erreur", "Le fichier 'villes_france.json' est introuvable."
+        )
     except Exception as e:
         messagebox.showerror("Erreur", str(e))
 
@@ -125,7 +128,7 @@ entree_n.pack(pady=5)
 btn_calcul = tk.Button(
     frame_ctrl,
     text="CALCULER",
-    command=lancer_ia,
+    command=run_tsp,
     bg=BUTTON_BG,
     fg="white",
     activebackground="#256AA2",
@@ -146,7 +149,6 @@ label_resultat = tk.Label(
 )
 label_resultat.pack(pady=10)
 
-# Section Texte + Scroll
 frame_liste = tk.Frame(main_frame, bg=BG_COLOR)
 frame_liste.pack(side=tk.RIGHT, expand=True, fill=tk.BOTH)
 

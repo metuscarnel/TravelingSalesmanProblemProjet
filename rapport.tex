@@ -15,7 +15,7 @@
 
 \title{Résolution du Problème du Voyageur de Commerce (TSP) par Algorithme Génétique}
 \author{Métus Gbogbohoundada, Youssef Kassou, Steven Atitse}
-\date{\today}
+\date{23 Mars 2026}
 
 \begin{document}
 
@@ -23,8 +23,7 @@
 
 \section{Contexte et Problématique}
 Ce projet de cours d'Intelligence Artificielle s'insère dans la mise en application des notions théoriques acquises au cours du semestre. Il s'agit d'une étude et d'une implémentation d'un algorithme génétique pour résoudre le problème du voyageur de commerce (TSP \cite{wikipedia_tsp}).
-Le problème du voyageur de commerce (TSP, \emph{Traveling Salesman Problem}) consiste à déterminer, étant donné un ensemble de villes, le plus court chemin passant par chaque ville exactement une fois et revenant à la ville de départ. Il s'agit d'un problème classique d'optimisation combinatoire, utilisé comme référence dans de nombreuses études sur les algorithmes d'approximation et d'optimisation.
-Il est utilisé dans de nombreux domaines, notamment la logistique, la planification de tournées, et l'optimisation de réseaux.
+Le problème du voyageur de commerce (TSP, \emph{Traveling Salesman Problem}) consiste à déterminer, étant donné un ensemble de villes, le plus court chemin passant par chaque ville exactement une fois et revenant à la ville de départ. Il s'agit d'un problème classique d'optimisation combinatoire, utilisé dans de nombreux domaines, notamment la logistique, la planification de tournées, et l'optimisation de réseaux.
 
 \section{Organisation du travail : Outils et Méthodes}
 \subsection{Organisation}
@@ -35,8 +34,8 @@ Cette approche s'est imposée, compte tenu des contraintes de disponibilité et 
 Pour la réalisation de ce projet, nous avons utilisé les outils suivants :
 \begin{itemize}
     \item \textbf{Python} : pour l'implémentation de l'algorithme génétique et la manipulation des données.
-    \item \textbf{Tkinter} : pour l'interface utilisateur.
-    \item \textbf{Plotly} : pour la visualisation du circuit optimisé sur une carte.
+    \item \textbf{Tkinter \cite{tkinter}} : pour l'interface utilisateur.
+    \item \textbf{Plotly \cite{ploty}} : pour la visualisation du circuit optimisé sur une carte.
     \item \textbf{Git et GitHub} : pour la gestion de versions et la collaboration.
     \item \textbf{JSON} : pour le stockage et la manipulation des données des villes.
     \item \textbf{\LaTeX} : pour la rédaction du rapport.
@@ -44,8 +43,9 @@ Pour la réalisation de ce projet, nous avons utilisé les outils suivants :
 
 \section{Étude du problème}
 \subsection{Complexité}
-Le problème de décision associé au TSP est \textbf{NP-Complet}. Il peut notamment être réduit à partir du problème du cycle Hamiltonien, un des 21 problèmes NP-Complets de Karp. Papadimitriou (1977) a démontré que le TSP reste NP-dur même si les distances sont euclidiennes.  
-Ainsi, trouver la solution exacte devient rapidement intractable lorsque le nombre de villes augmente, rendant nécessaire l'utilisation d'algorithmes d'approximation tels que les algorithmes génétiques.
+Le problème de décision associé au TSP est \cite{np_completude}
+\textbf{NP-Complet}. Il peut notamment être réduit à partir du problème du cycle Hamiltonien \cite{cycle_hamiltonien}, un des 21 problèmes NP-Complets de Karp.
+Ainsi, trouver la solution exacte devient rapidement intraitable lorsque le nombre de villes augmente, rendant nécessaire l'utilisation d'algorithmes d'approximation tels que les algorithmes génétiques.
 
 \subsection{Analyse Combinatoire}
 Pour $n$ villes, le nombre total de circuits possibles est $n!$.  
@@ -65,7 +65,7 @@ Pour l'implémentation de notre algorithme génétique, nous avons modélisé le
 
 \subsection{Paramètres de l'Algorithme}
 \begin{itemize}
-    \item \textbf{Fonction de Sélection :} \emph{Tournoi}. On choisit aléatoirement $k$ individus et l'on sélectionne les deux meilleurs selon la fonction \textit{fitness}.
+    \item \textbf{Fonction de Sélection :} \emph{Tournoi \cite{selection_tournoi}}. On choisit aléatoirement $k$ individus et l'on sélectionne les deux meilleurs selon la fonction \textit{fitness}.
     \item \textbf{Fonction d'évaluation (fitness) :} La distance totale $D$ du circuit, calculée en utilisant la formule de Haversine \cite{haversine}, qui prend en compte la courbure de la Terre pour calculer les distances entre les villes à partir de leurs coordonnées géographiques. Entre deux solutions, celle qui a la plus petite distance totale est considérée comme la meilleure.
     $D$ s'exprime comme suit :
     \[D = \sum_{i=1}^{n-1} d(v_i, v_{i+1}) + d(v_n, v_1)\]
@@ -73,13 +73,13 @@ Pour l'implémentation de notre algorithme génétique, nous avons modélisé le
 \end{itemize}
 
 \subsection{Fonction de recombinaison}
-La recombinaison utilisée est le \textbf{Order Crossover (OX) \cite{ox_crossover}} : une portion du parent est copiée telle quelle dans l’enfant, les villes manquantes sont ajoutées dans l’ordre du second parent en évitant les doublons.
+La recombinaison utilisée est le \textbf{Order Crossover (OX) \cite{ox_crossover} }: une portion du parent est copiée telle quelle dans l’enfant, les villes manquantes sont ajoutées dans l’ordre du second parent en évitant les doublons.
 
 \subsection{Fonction de mutation}
-La mutation est une \textbf{swap mutation} avec une probabilité $p = 2\,\%$. Si un nombre $q$ généré aléatoirement est inférieur à $p$, deux villes sont sélectionnées aléatoirement et échangées dans l’individu.
+La mutation est une \textbf{swap mutation} avec une probabilité $p = 2\,\%$. Si une valeur $q$, générée aléatoirement est inférieur à $p$, deux villes sont sélectionnées aléatoirement et échangées dans l’individu.
 
 \subsection{Stratégie de remplacement}
-La population suivante est constituée uniquement des enfants générés par celle qui l'a précédée : c'est un \textbf{remplacement générationnel}.
+La population suivante est constituée uniquement des enfants générés par celle qui l'a précédée : c'est un \textbf{remplacement générationnel \cite{remplacement_gen}}.
 
 \section{Paramètres des Tests}
 \begin{itemize}
@@ -90,11 +90,19 @@ La population suivante est constituée uniquement des enfants générés par cel
 \section{Affichage et Visualisation}
 \texttt{NB :}  La gestion de l'affichage est réalisée dans un fichier tiers pour séparer la logique de notre algorithme de la partie interface utilisateur. Les bibliothèques suivantes ont été utilisées :
 \begin{itemize}
-    \item \textbf{Tkinter} pour l'interface utilisateur et l’affichage de la feuille de route.
-    \item \textbf{Plotly} pour tracer le circuit optimisé sur une carte.
+    \item \textbf{Tkinter \cite{tkinter}} pour l'interface utilisateur et l’affichage de la feuille de route.
+    \item \textbf{Plotly \cite{ploty}} pour tracer le circuit optimisé sur une carte.
 \end{itemize}
 
 \section{Résultats et Discussions}
+
+
+Pour tester notre algorithme génétique, nous nous sommes servis de données réelles. Nous avons testé notre algorithme sur l'ensemble des communes de France (téléchargeables depuis l'adresse suivante : \url{https://geo.api.gouv.fr/communes?fields=nom,centre&format=json&geometry=centre}), en utilisant leurs coordonnées réelles. Nous avons évalué l'algorithme sur des ensembles de villes de tailles différentes (5, 10, 15, 20) pour évaluer sa performance et sa capacité à trouver des solutions proches de l'optimal.
+
+La taille des populations à chaque génération était de 100 individus et l'algorithme a été exécuté sur 500 générations. Nous avons comparé les résultats obtenus par notre algorithme génétique avec les solutions exactes obtenues par une approche de brute-force pour les instances de taille réduite ($n \leq 10$ villes).
+
+Pour $n < 10$, l'algorithme trouve toujours la solution optimale ; pour $n = 10$, il trouve une solution à 1,5\,\% de l'optimal. Pour $n > 10$, le brute-force est très lent pour le calcul de l'optimum. Nous pensons que les résultats de ces tests attestent du bon fonctionnement de notre algorithme pour un nombre quelconque de ville.
+
 \begin{algorithm}
 \caption{Algorithme Génétique pour le TSP}
 \label{alg:tsp}
@@ -103,7 +111,7 @@ La population suivante est constituée uniquement des enfants générés par cel
     \State $pop \gets \text{Generate\_Population}(villes, taille\_pop)$
     \State $best \gets \arg\min_{ind \in pop} \text{Distance}(ind)$
     
-    \For{$i = 1$ \To $gens$}
+    \For{$i = 1 \textbf{ à } gens$}
         \State $pop \gets \text{New\_Population}(pop, taille\_pop)$
         \State $current\_best \gets \arg\min_{ind \in pop} \text{Distance}(ind)$
         
@@ -142,19 +150,13 @@ La population suivante est constituée uniquement des enfants générés par cel
 \end{algorithmic}
 \end{algorithm}
 
-Pour tester notre algorithme génétique, nous nous sommes servis de données réelles. Nous avons testé notre algorithme sur l'ensemble des communes de France (téléchargeables depuis l'adresse suivante : \url{https://geo.api.gouv.fr/communes?fields=nom,centre&format=json&geometry=centre}), en utilisant leurs coordonnées réelles. Nous avons évalué l'algorithme sur des ensembles de villes de tailles différentes (5, 10, 15, 20) pour évaluer sa performance et sa capacité à trouver des solutions proches de l'optimal.
-
-La taille des populations à chaque génération était de 100 individus et l'algorithme a été exécuté sur 500 générations. Nous avons comparé les résultats obtenus par notre algorithme génétique avec les solutions exactes obtenues par une approche de force brute pour les instances de taille réduite ($n \leq 10$ villes).
-
-Pour $n < 10$, l'algorithme trouve toujours la solution optimale ; pour $n = 10$, il trouve une solution à 1,5\,\% de l'optimal. Pour $n > 10$, l'approche combinatoire (force brute) est très lente pour le calcul de l'optimum. Nous pensons que les tests précédents attestent du bon fonctionnement de notre algorithme pour un nombre $n$ de villes supérieur à 10.
-
 \section{Limitations et Perspectives}
 Pour améliorer notre algorithme et obtenir de meilleurs résultats, plusieurs pistes peuvent être envisagées :
 \begin{itemize}
     \item Introduire d'autres algorithmes de sélection (ex. \emph{roulette wheel}) ou de mutation (ex. inversion) pour diversifier les solutions.
     \item Utiliser des techniques d'élitisme pour garantir la conservation des meilleures solutions d'une génération à l'autre.
     \item Tester sur des instances plus grandes ($n \geq 20$ villes) et comparer avec d'autres heuristiques (ex. algorithme des colonies de fourmis, recuit simulé).
-    \item Utiliser la bibliothèque \texttt{tsplib} \cite{tsblib} pour des benchmarks standardisés et comparer les performances de notre algorithme génétique avec d'autres approches publiées.
+    \item Utiliser la bibliothèque \texttt{tsplib} \cite{tsblib} pour comparer les performances de notre algorithme génétique avec d'autres approches publiées.
     \item Concevoir une bibliothèque plus généralisée pour le TSP, offrant une possibilité de paramétrage plus flexible pour d'autres besoins d'expérimentation.
 \end{itemize}
 
@@ -165,6 +167,5 @@ De ce fait, de meilleurs choix de paramètres et d'autres techniques d'optimisat
 % --- Modification ici ---
 \nocite{*} % Cette commande force LaTeX à inclure toutes les références du fichier .bib, même celles non citées dans le texte.
 \bibliographystyle{plain} 
-\bibliography{rapport}
-
+\bibliography{main}
 \end{document}
